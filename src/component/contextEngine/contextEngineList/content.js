@@ -16,7 +16,7 @@ export default function Content() {
     const getData = async () => {
         setLoader(true)
         try {
-            const response = await fetch("http://localhost:3001/contextEngine/getAll", {
+            const response = await fetch(`${API_URL}/contextEngine/getAll`, {
                 method: "GET"
             });
             const result = await response.json();

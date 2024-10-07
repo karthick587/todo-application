@@ -2,6 +2,7 @@ import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useToaster } from "../../common/toastAlertContext";
+import { API_URL } from "../../../utils/constants";
 
 export default function Content() {
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -11,7 +12,7 @@ export default function Content() {
     const Save = async (data) => {
         setLoader(true)
         try {
-            const response = await fetch("http://localhost:3001/contextEngine/add", {
+            const response = await fetch(`${API_URL}/contextEngine/add`, {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {

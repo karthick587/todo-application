@@ -13,7 +13,7 @@ export default function Content() {
     const Update = async (data) => {
         setLoader(true)
         try {
-            const response = await fetch(`http://localhost:3001/contextEngine/update/${data?._id}`, {
+            const response = await fetch(`${API_URL}/contextEngine/update/${data?._id}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
