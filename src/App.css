@@ -1,0 +1,148 @@
+.nav-bar {
+  background-color: #010080;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+body{
+  position: relative;
+}
+.nav-bar .profile img {
+  width: 50px;
+  height: 50px;
+}
+
+.nav-bar .nav-title {
+  color: white;
+}
+
+.btn-none {
+  background: transparent !important;
+  border: none !important;
+}
+
+.toggle-btn svg {
+  color: white;
+}
+
+.nav-body {
+  display: flex;
+}
+
+.side-nav {
+  /* display: flex; */
+  padding: 20px;
+  border-right: 1px solid #80808052;
+  height: 90vh;
+}
+
+.side-nav .link {
+  width: 200px !important;
+  overflow: hidden;
+  display: flex;
+  padding: 10px 0px;
+  align-items: flex-end;
+  text-decoration: none !important;
+}
+.nav-body .body {
+  background-color: white;
+  padding: 20px;
+  width: 100%;
+}
+.content-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #010080;
+  padding: 10px 10px 10px 4px;
+}
+.table-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 5px;
+}
+.content-grid {
+  padding: 15px;
+  border: 1px solid #80808040;
+  border-radius: 3px;
+}
+
+.side-nav .link .icon {
+  padding: 0px 13px 0px 2px;
+  font-size: 25px;
+}
+.search{
+  position: relative;
+}
+.search .search-icon {
+  position: absolute;
+  font-size: 22px;
+  left: 8px;
+  top: 8px;
+}
+.search input{
+  padding-left:30px ;
+}
+
+.custom-select button{
+  background: transparent !important;
+  border: none !important;
+  color: black !important ;
+}
+.dropdown-toggle::after {
+  display:none;
+}
+
+/* styles.css */
+.toast-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.toast-alert {
+  background: #333;
+  color: white;
+  padding: 10px;
+  margin-bottom: 25px;
+  border-radius: 5px;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s forwards;
+  z-index: 999999;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.loader-body {
+  display: flex;
+  position: absolute;
+  justify-content: center; /* Center horizontally */
+  align-items: center;    /* Center vertically */
+  height: 100vh;         /* Full viewport height */
+  margin: 0;             /* Remove default margin */
+  width: 100%;
+  background-color: #ffffffe3 ;
+  z-index: 99999;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
