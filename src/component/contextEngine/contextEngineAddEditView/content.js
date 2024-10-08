@@ -1,29 +1,30 @@
-import { useEffect } from "react"
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { formateDate } from "../../constant/helper";
 import { useToaster } from "../../common/toastAlertContext";
 import { API_URL } from "../../../utils/constants";
+import { Fragment, useEffect } from "react";
+import { formateDate } from "../../constant/helper";
 
 export default function Content() {
     const { register, reset, formState: { errors }, handleSubmit } = useForm();
-    const { state } = useLocation()
+    const { state } = useLocation();
     const navigate = useNavigate();
     const { addToast, setLoader } = useToaster();
-    const Update = async (data) => {
+
+    const Save = async (data) => {
         setLoader(true)
         try {
-            const response = await fetch(`${API_URL}/contextEngine/update/${data?._id}`, {
-                method: "PUT",
+            const response = await fetch(`${API_URL}/contextEngine/todo${(state?.type == "Edit") ? `/${state?.data?._id}` : ""}`, {
+                method: (state?.type === "Edit") ? "PUT" : "POST",
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             const result = await response.json(); // Extract JSON data
-            if (result.statusCode === 200) {
-                navigate("/context-engine")
+            if ((result.statusCode === 201)||(result.statusCode === 200)) {
+                navigate("/context-engine-list")
             }
             addToast(result.message);
         } catch (error) {
@@ -35,32 +36,37 @@ export default function Content() {
     };
 
     const Reset = () => {
-        if (state?._id) {
-            reset({ ...state, nextSync: formateDate(state.nextSync) })
-        }
+        reset({ ...(state.data || {name:"",goal:"",autoSync:"",nextSync:""}), nextSync: formateDate(state?.data?.nextSync) })
     }
+
     useEffect(() => {
-        Reset()
+        if (state?.data) {
+            Reset()
+        }
     }, [state])
+
+    const isDisabled = () => {
+        return state.type === "View"
+    }
     return (
         <div className="content">
             <div className="content-title">
-                Update Context Engine
+                {state?.type} Context Engine
             </div>
             <div className="content-grid">
-                <form onSubmit={handleSubmit(Update)}>
+                <form onSubmit={handleSubmit(Save)}>
                     <div className="row">
                         <div className="col-6">
                             <div className="form-group">
                                 <label>Name</label>
-                                <input className="form-control" {...register("name", { required: "Name is required" })} />
+                                <input className="form-control" disabled={isDisabled()} {...register("name", { required: "Name is required" })} />
                                 {errors?.name && <span className="form-error">{errors.name.message}</span>}
                             </div>
                         </div>
                         <div className="col-6">
                             <div className="form-group">
                                 <label>Goal</label>
-                                <input className="form-control" {...register("goal", { required: "Goal is required" })} />
+                                <input className="form-control" disabled={isDisabled()} {...register("goal", { required: "Goal is required" })} />
                                 {errors?.goal && <span className="form-error">{errors.goal.message}</span>}
                             </div>
                         </div>
@@ -69,7 +75,8 @@ export default function Content() {
                                 <label>Auto Sync</label>
                                 <Form.Check // prettier-ignore
                                     type="switch"
-                                    {...register("autoSync", { required: "Auto Sync is required" })}
+                                    disabled={isDisabled()}
+                                    {...register("autoSync")}
                                 />
                                 {errors?.autoSync && <span className="form-error">{errors.autoSync.message}</span>}
                             </div>
@@ -77,17 +84,25 @@ export default function Content() {
                         <div className="col-6">
                             <div className="form-group">
                                 <label>Next Sync</label>
-                                <input className="form-control" type='date' {...register("nextSync", { required: "Next Sync is required" })} />
+                                <input className="form-control" disabled={isDisabled()} type='date' {...register("nextSync", { required: "Next Sync is required" })} />
                                 {errors?.nextSync && <span className="form-error">{errors.nextSync.message}</span>}
                             </div>
                         </div>
                         <div className="w-100 mt-3">
-                            <button type='submit' className="btn btn-success float-end ">
-                                Submit
-                            </button>
-                            <button type='button' onClick={Reset} className="btn btn-warning float-end me-2 ">
-                                Reset
-                            </button>
+                            {(state?.type === "View") ?
+                                <div className="btn btn-success float-end "  onClick={() => navigate("/context-engine", { state: { data: state?.data, type: "Edit" } })} >Edit</div>
+                                :
+                                <Fragment>
+                                    <button type='submit' className="btn btn-success float-end ">
+                                        Submit
+                                    </button>
+
+                                    <button type='button' onClick={Reset} className="btn btn-warning float-end me-2">
+                                        Reset
+                                    </button>
+
+                                </Fragment>
+                            }
                         </div>
                     </div>
                 </form>

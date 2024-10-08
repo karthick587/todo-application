@@ -6,9 +6,7 @@ import { lazy, Suspense, useState } from 'react';
 import { ToasterContext } from './component/common/toastAlertContext';
 
 const ContextEngineList = lazy(() => import('./page/contextEngineList'));
-const ContextEngineAdd = lazy(() => import('./page/contextEngineAdd'));
-const ContextEngineEdit = lazy(() => import('./page/contextEngineEdit'));
-const ContextEngineView = lazy(() => import('./page/contextEngineView'));
+const ContextEngineAddEditView = lazy(() => import('./page/contextEngineAddEditView'));
 const Home = lazy(() => import('./page/home'));
 
 function App() {
@@ -29,7 +27,7 @@ function App() {
     <ToasterContext.Provider value={{ addToast, toasts, setLoader }}>
       {loader &&
         <div className='loader-body'>
-          <div class="loader"></div>
+          <div className="loader"></div>
         </div>
       }
       <div className='toast-container'>
@@ -47,10 +45,8 @@ function App() {
           <Routes >
             <Route path="/" >
               <Route index element={<Home />} />
-              <Route path="/context-engine" element={<ContextEngineList />} />
-              <Route path="/context-engine-add" element={<ContextEngineAdd />} />
-              <Route path="/context-engine-edit" element={<ContextEngineEdit />} />
-              <Route path="/context-engine-view" element={<ContextEngineView />} />
+              <Route path="/context-engine-list" element={<ContextEngineList />} />
+              <Route path="/context-engine" element={<ContextEngineAddEditView />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -37,7 +37,7 @@ export default function DashNav({ children }) {
                     </div>
                     <div className="">
 
-                        <Link to={"/context-engine"} className="link">
+                        <Link to={"/context-engine-list"} className="link">
                             <div className="icon">
                                 <CiCircleList />
                             </div>

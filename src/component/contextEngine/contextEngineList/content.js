@@ -13,11 +13,11 @@ export default function Content() {
     const [search, setSearch] = useState()
     const [filteredData, setFilteredData] = useState([])
     const navigate = useNavigate();
-    const {  setLoader } = useToaster();
+    const { setLoader } = useToaster();
     const getData = async () => {
         setLoader(true)
         try {
-            const response = await fetch(`${API_URL}/contextEngine/getAll`, {
+            const response = await fetch(`${API_URL}/contextEngine/todo/get`, {
                 method: "GET"
             });
             const result = await response.json();
@@ -54,11 +54,10 @@ export default function Content() {
                         <input className="form-control" onChange={(e) => setSearch(e.target.value)} />
                     </div>
                     <div>
-                        <button className="btn btn-success" onClick={() => navigate("/context-engine-add")}>
+                        <button className="btn btn-success" onClick={() => navigate("/context-engine", { state: { type: 'Add' } })}>
                             + Add
                         </button>
                     </div>
-
                 </div>
                 <Table striped bordered hover>
                     <thead>
@@ -73,33 +72,30 @@ export default function Content() {
                     </thead>
                     <tbody>
                         {filteredData.length > 0 ? filteredData?.map((val, index) =>
-                            <tr>
+                            <tr key={val?._id}>
                                 <td>{index + 1}</td>
                                 <td>{val.name}</td>
                                 <td>{val.goal}</td>
-                                <td>
-                                    {val.autoSync?"Yes":"No"}
-                                </td>
+                                <td>{val.autoSync ? "Yes" : "No"}</td>
                                 <td>{formateDate(val.nextSync)}</td>
                                 <td>
                                     <DropdownButton role="button" ty className="custom-select" title={<HiOutlineDotsVertical />}>
                                         <div>
-                                            <button className="btn-none" onClick={() => navigate("/context-engine-edit", { state: val })} >Edit</button>
+                                            <button className="btn-none" onClick={() => navigate("/context-engine", { state: { data: val, type: "Edit" } })} >Edit</button>
                                         </div>
                                         <div>
-                                            <button className="btn-none" onClick={() => navigate("/context-engine-view", { state: val })}  >View</button>
+                                            <button className="btn-none" onClick={() => navigate("/context-engine", { state: { data: val, type: "View" } })}  >View</button>
                                         </div>
                                     </DropdownButton>
                                 </td>
                             </tr>)
                             :
                             <tr >
-                                <th colspan={6} className="text-center">
+                                <th colSpan={6} className="text-center">
                                     No records
                                 </th>
                             </tr>
                         }
-
                     </tbody>
                 </Table>
             </div>
